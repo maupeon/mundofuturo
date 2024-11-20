@@ -3,8 +3,7 @@
 import { useAudioPlayer } from '@/components/AudioProvider'
 
 export function EpisodePlayButton({ episode, playing, paused, ...props }) {
-  let player = useAudioPlayer(episode)
-
+  let player = useAudioPlayer()
   return (
     <button
       type="button"

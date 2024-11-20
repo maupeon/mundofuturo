@@ -124,7 +124,6 @@ export function AudioProvider({ children }) {
 
 export function useAudioPlayer(episode) {
   let player = useContext(AudioPlayerContext)
-
   return useMemo(
     () => ({
       ...player,
