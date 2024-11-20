@@ -51,17 +51,17 @@ function EpisodeEntry({ episode }) {
           <div className="mt-4 flex items-center gap-4">
             <EpisodePlayButton
               episode={episode}
-              className="flex items-center gap-x-3 text-sm font-bold leading-6 text-pink-500 hover:text-pink-700 active:text-pink-900"
+              className="flex items-center gap-x-3 text-sm font-bold leading-6 text-[#510061] hover:text-pink-700 active:text-pink-900"
               playing={
                 <>
                   <PauseIcon className="h-2.5 w-2.5 fill-current" />
-                  <span aria-hidden="true">Listen</span>
+                  <span aria-hidden="true">Escuchar</span>
                 </>
               }
               paused={
                 <>
                   <PlayIcon className="h-2.5 w-2.5 fill-current" />
-                  <span aria-hidden="true">Listen</span>
+                  <span aria-hidden="true">Escuchar</span>
                 </>
               }
             />
@@ -73,10 +73,10 @@ function EpisodeEntry({ episode }) {
             </span>
             <Link
               href={`/${episode.id}`}
-              className="flex items-center text-sm font-bold leading-6 text-pink-500 hover:text-pink-700 active:text-pink-900"
+              className="flex items-center text-sm font-bold leading-6 text-[#510061] hover:text-pink-700 active:text-pink-900"
               aria-label={`Show notes for episode ${episode.title}`}
             >
-              Show notes
+              Ver más
             </Link>
           </div>
         </div>
@@ -92,7 +92,7 @@ export default async function Home() {
     <div className="pb-12 pt-16 sm:pb-4 lg:pt-12">
       <Container>
         <h1 className="text-2xl font-bold leading-7 text-slate-900">
-          Episodes
+          Episodios
         </h1>
       </Container>
       <div className="divide-y divide-slate-100 sm:mt-4 lg:mt-8 lg:border-t lg:border-slate-100">

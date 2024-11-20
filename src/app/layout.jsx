@@ -2,12 +2,12 @@ import '@/styles/tailwind.css'
 
 export const metadata = {
   title: {
-    template: '%s - Their Side',
+    template: '%s - Mundo Futuro',
     default:
-      'Their Side - Conversations with the most tragically misunderstood people of our time',
+      'Mundo Futuro - El mundo cambiará más en los próximos diez años que en los últimos cien.',
   },
   description:
-    'Conversations with the most tragically misunderstood people of our time.',
+    'El mundo cambiará más en los próximos diez años que en los últimos cien..',
 }
 
 export default function RootLayout({ children }) {

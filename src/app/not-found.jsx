@@ -16,7 +16,7 @@ export default function NotFound() {
         </p>
         <Link
           href="/"
-          className="mt-4 text-sm font-bold leading-6 text-pink-500 hover:text-pink-700 active:text-pink-900"
+          className="mt-4 text-sm font-bold leading-6 text-[#510061] hover:text-pink-700 active:text-pink-900"
         >
           Go back home
         </Link>

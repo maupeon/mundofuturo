@@ -15,7 +15,7 @@ export function AboutSection(props) {
           colors={['fill-violet-300', 'fill-pink-300']}
           className="h-2.5 w-2.5"
         />
-        <span className="ml-2.5">About</span>
+        <span className="ml-2.5">Acerca de</span>
       </h2>
       <p
         className={clsx(
@@ -23,19 +23,17 @@ export function AboutSection(props) {
           !isExpanded && 'lg:line-clamp-4',
         )}
       >
-        In this show, Eric and Wes dig deep to get to the facts with guests who
-        have been labeled villains by a society quick to judge, without actually
-        getting the full story. Tune in every Thursday to get to the truth with
-        another misunderstood outcast as they share the missing context in their
-        tragic tale.
+        Un podcast en donde Jorge Alor, Mario Valle y Jaime Limón, fundadores de
+        la legendaria Revista Sputnik, discuten las tecnologías y tendencias en
+        aceleración exponencial que definen el fin de una era.
       </p>
       {!isExpanded && (
         <button
           type="button"
-          className="mt-2 hidden text-sm font-bold leading-6 text-pink-500 hover:text-pink-700 active:text-pink-900 lg:inline-block"
+          className="mt-2 hidden text-sm font-bold leading-6 text-[#510061] hover:text-pink-700 active:text-pink-900 lg:inline-block"
           onClick={() => setIsExpanded(true)}
         >
-          Show more
+          Ver más
         </button>
       )}
     </section>

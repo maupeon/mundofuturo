@@ -1,4 +1,5 @@
-import { Fragment } from 'react'
+'use client'
+import { Fragment, useEffect, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 
@@ -7,7 +8,7 @@ import { AudioProvider } from '@/components/AudioProvider'
 import { AudioPlayer } from '@/components/player/AudioPlayer'
 import { TinyWaveFormIcon } from '@/components/TinyWaveFormIcon'
 import { Waveform } from '@/components/Waveform'
-import posterImage from '@/images/poster.png'
+import posterImage from '@/images/poster.webp'
 
 function SpotifyIcon(props) {
   return (
@@ -58,13 +59,34 @@ function PersonIcon(props) {
 }
 
 export default function MainLayout({ children }) {
-  let hosts = ['Eric Gordon', 'Wes Mantooth']
+  // let hosts = ['Eric Gordon', 'Wes Mantooth']
+  const [hosts, setAuthors] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
 
+  useEffect(() => {
+    const fetchAuthors = async () => {
+      try {
+        const res = await fetch('/api/get-authors')
+        if (!res.ok) {
+          throw new Error('Failed to fetch authors')
+        }
+        const data = await res.json()
+        setAuthors(data)
+      } catch (err) {
+        setError(err.message)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchAuthors()
+  }, [])
   return (
     <AudioProvider>
       <header className="bg-slate-50 lg:fixed lg:inset-y-0 lg:left-0 lg:flex lg:w-112 lg:items-start lg:overflow-y-auto xl:w-120">
         <div className="hidden lg:sticky lg:top-0 lg:flex lg:w-16 lg:flex-none lg:items-center lg:whitespace-nowrap lg:py-12 lg:text-sm lg:leading-7 lg:[writing-mode:vertical-rl]">
-          <span className="font-mono text-slate-500">Hosted by</span>
+          <span className="font-mono text-slate-500">Presentado por</span>
           <span className="mt-6 flex gap-6 font-bold text-slate-900">
             {hosts.map((host, hostIndex) => (
               <Fragment key={host}>
@@ -73,7 +95,7 @@ export default function MainLayout({ children }) {
                     /
                   </span>
                 )}
-                {host}
+                {host.name}
               </Fragment>
             ))}
           </span>
@@ -95,11 +117,11 @@ export default function MainLayout({ children }) {
           </Link>
           <div className="mt-10 text-center lg:mt-12 lg:text-left">
             <p className="text-xl font-bold text-slate-900">
-              <Link href="/">Their Side</Link>
+              <Link href="/">Mundo Futuro</Link>
             </p>
             <p className="mt-3 text-lg font-medium leading-8 text-slate-700">
-              Conversations with the most tragically misunderstood people of our
-              time.
+              El mundo cambiará más en los próximos diez años que en los últimos
+              cien.
             </p>
           </div>
           <AboutSection className="mt-12 hidden lg:block" />
@@ -109,7 +131,7 @@ export default function MainLayout({ children }) {
                 colors={['fill-indigo-300', 'fill-blue-300']}
                 className="h-2.5 w-2.5"
               />
-              <span className="ml-2.5">Listen</span>
+              <span className="ml-2.5">Escuchar</span>
             </h2>
             <div className="h-px bg-gradient-to-r from-slate-200/0 via-slate-200 to-slate-200/0 lg:hidden" />
             <ul
@@ -146,7 +168,7 @@ export default function MainLayout({ children }) {
           <AboutSection />
           <h2 className="mt-8 flex items-center font-mono text-sm font-medium leading-7 text-slate-900">
             <PersonIcon className="h-3 w-auto fill-slate-300" />
-            <span className="ml-2.5">Hosted by</span>
+            <span className="ml-2.5">Presentado por</span>
           </h2>
           <div className="mt-2 flex gap-6 text-sm font-bold leading-7 text-slate-900">
             {hosts.map((host, hostIndex) => (
@@ -156,7 +178,7 @@ export default function MainLayout({ children }) {
                     /
                   </span>
                 )}
-                {host}
+                {host.name}
               </Fragment>
             ))}
           </div>
