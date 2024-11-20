@@ -2,6 +2,8 @@
 import { Fragment, useEffect, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
+import Modal from 'react-modal'
+import { motion, AnimatePresence } from 'framer-motion'
 
 import { AboutSection } from '@/components/AboutSection'
 import { AudioProvider } from '@/components/AudioProvider'
@@ -9,6 +11,8 @@ import { AudioPlayer } from '@/components/player/AudioPlayer'
 import { TinyWaveFormIcon } from '@/components/TinyWaveFormIcon'
 import { Waveform } from '@/components/Waveform'
 import posterImage from '@/images/poster.webp'
+import RichTextRenderer from '@/components/RichTextRenderer'
+import { X } from 'lucide-react'
 
 function SpotifyIcon(props) {
   return (
@@ -30,26 +34,6 @@ function ApplePodcastIcon(props) {
   )
 }
 
-function OvercastIcon(props) {
-  return (
-    <svg aria-hidden="true" viewBox="0 0 32 32" {...props}>
-      <path d="M16 28.8A12.77 12.77 0 0 1 3.2 16 12.77 12.77 0 0 1 16 3.2 12.77 12.77 0 0 1 28.8 16 12.77 12.77 0 0 1 16 28.8Zm0-5.067.96-.96-.96-3.68-.96 3.68.96.96Zm-1.226-.054-.48 1.814 1.12-1.12-.64-.694Zm2.453 0-.64.64 1.12 1.12-.48-1.76Zm.907 3.307L16 24.853l-2.133 2.133c.693.107 1.387.213 2.133.213.747 0 1.44-.053 2.134-.213ZM16 4.799C9.814 4.8 4.8 9.813 4.8 16c0 4.907 3.147 9.067 7.52 10.56l2.4-8.906c-.533-.374-.853-1.014-.853-1.707A2.14 2.14 0 0 1 16 13.813a2.14 2.14 0 0 1 2.134 2.133c0 .693-.32 1.28-.854 1.707l2.4 8.906A11.145 11.145 0 0 0 27.2 16c0-6.186-5.013-11.2-11.2-11.2Zm7.307 16.747c-.267.32-.747.427-1.12.16-.373-.267-.427-.747-.16-1.067 0 0 1.44-1.92 1.44-4.64 0-2.72-1.44-4.64-1.44-4.64-.267-.32-.213-.8.16-1.066.373-.267.853-.16 1.12.16.107.106 1.76 2.293 1.76 5.546 0 3.254-1.653 5.44-1.76 5.547Zm-3.893-2.08c-.32-.32-.267-.907.053-1.227 0 0 .8-.853.8-2.24 0-1.386-.8-2.186-.8-2.24-.32-.32-.32-.853-.053-1.226.32-.374.8-.374 1.12-.054.053.054 1.333 1.387 1.333 3.52 0 2.134-1.28 3.467-1.333 3.52-.32.32-.8.267-1.12-.053Zm-6.827 0c-.32.32-.8.373-1.12.053-.053-.106-1.333-1.386-1.333-3.52 0-2.133 1.28-3.413 1.333-3.52.32-.32.853-.32 1.12.054.32.32.267.906-.053 1.226 0 .054-.8.854-.8 2.24 0 1.387.8 2.24.8 2.24.32.32.373.854.053 1.227Zm-2.773 2.24c-.374.267-.854.16-1.12-.16-.107-.107-1.76-2.293-1.76-5.547 0-3.253 1.653-5.44 1.76-5.546.266-.32.746-.427 1.12-.16.373.266.426.746.16 1.066 0 0-1.44 1.92-1.44 4.64 0 2.72 1.44 4.64 1.44 4.64.266.32.16.8-.16 1.067Z" />
-    </svg>
-  )
-}
-
-function RSSIcon(props) {
-  return (
-    <svg aria-hidden="true" viewBox="0 0 32 32" {...props}>
-      <path
-        fillRule="evenodd"
-        clipRule="evenodd"
-        d="M8.5 4h15A4.5 4.5 0 0 1 28 8.5v15a4.5 4.5 0 0 1-4.5 4.5h-15A4.5 4.5 0 0 1 4 23.5v-15A4.5 4.5 0 0 1 8.5 4ZM13 22a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm-6-6a9 9 0 0 1 9 9h3A12 12 0 0 0 7 13v3Zm5.74-4.858A15 15 0 0 0 7 10V7a18 18 0 0 1 18 18h-3a15 15 0 0 0-9.26-13.858Z"
-      />
-    </svg>
-  )
-}
-
 function PersonIcon(props) {
   return (
     <svg aria-hidden="true" viewBox="0 0 11 12" {...props}>
@@ -59,10 +43,9 @@ function PersonIcon(props) {
 }
 
 export default function MainLayout({ children }) {
-  // let hosts = ['Eric Gordon', 'Wes Mantooth']
   const [hosts, setAuthors] = useState([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(null)
+  const [modalIsOpen, setModalIsOpen] = useState(false)
+  const [selectedHost, setSelectedHost] = useState(null)
 
   useEffect(() => {
     const fetchAuthors = async () => {
@@ -75,13 +58,24 @@ export default function MainLayout({ children }) {
         setAuthors(data)
       } catch (err) {
         setError(err.message)
-      } finally {
-        setLoading(false)
+        console.error('Error fetching authors:', err)
       }
     }
 
     fetchAuthors()
   }, [])
+
+  const openModal = (host) => {
+    console.log(host)
+    setSelectedHost(host)
+    setModalIsOpen(true)
+  }
+
+  const closeModal = () => {
+    setModalIsOpen(false)
+    setSelectedHost(null)
+  }
+
   return (
     <AudioProvider>
       <header className="bg-slate-50 lg:fixed lg:inset-y-0 lg:left-0 lg:flex lg:w-112 lg:items-start lg:overflow-y-auto xl:w-120">
@@ -89,13 +83,13 @@ export default function MainLayout({ children }) {
           <span className="font-mono text-slate-500">Presentado por</span>
           <span className="mt-6 flex gap-6 font-bold text-slate-900">
             {hosts.map((host, hostIndex) => (
-              <Fragment key={host}>
+              <Fragment key={host.name}>
                 {hostIndex !== 0 && (
                   <span aria-hidden="true" className="text-slate-400">
                     /
                   </span>
                 )}
-                {host.name}
+                <button onClick={() => openModal(host)}>{host.name}</button>
               </Fragment>
             ))}
           </span>
@@ -139,14 +133,20 @@ export default function MainLayout({ children }) {
               className="mt-4 flex justify-center gap-10 text-base font-medium leading-7 text-slate-700 sm:gap-8 lg:flex-col lg:gap-4"
             >
               {[
-                ['Spotify', SpotifyIcon],
-                ['Apple Podcast', ApplePodcastIcon],
-                ['Overcast', OvercastIcon],
-                ['RSS Feed', RSSIcon],
-              ].map(([label, Icon]) => (
+                [
+                  'Spotify',
+                  SpotifyIcon,
+                  'https://open.spotify.com/show/5ZldFoVYM0Orm9ai06t0o4?dl_branch=1&nd=1&dlsi=9e16de5e22c1434d',
+                ],
+                [
+                  'Apple Podcast',
+                  ApplePodcastIcon,
+                  'https://podcasts.apple.com/cr/podcast/mundo-futuro/id1569244095?l=en-GB',
+                ],
+              ].map(([label, Icon, href]) => (
                 <li key={label} className="flex">
                   <Link
-                    href="/"
+                    href={href}
                     className="group flex items-center"
                     aria-label={label}
                   >
@@ -172,13 +172,13 @@ export default function MainLayout({ children }) {
           </h2>
           <div className="mt-2 flex gap-6 text-sm font-bold leading-7 text-slate-900">
             {hosts.map((host, hostIndex) => (
-              <Fragment key={host}>
+              <Fragment key={host.name}>
                 {hostIndex !== 0 && (
                   <span aria-hidden="true" className="text-slate-400">
                     /
                   </span>
                 )}
-                {host.name}
+                <button onClick={() => openModal(host)}>{host.name}</button>
               </Fragment>
             ))}
           </div>
@@ -187,6 +187,48 @@ export default function MainLayout({ children }) {
       <div className="fixed inset-x-0 bottom-0 z-10 lg:left-112 xl:left-120">
         <AudioPlayer />
       </div>
+      {modalIsOpen && (
+        <AnimatePresence>
+          <motion.div
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-70"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={closeModal} // Close modal when clicking outside
+          >
+            <motion.div
+              className="relative mx-auto w-full max-w-lg rounded-lg bg-white p-6 text-center shadow-lg"
+              initial={{ scale: 0.8 }}
+              animate={{ scale: 1 }}
+              exit={{ scale: 0.8 }}
+              onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside
+            >
+              {selectedHost && (
+                <div>
+                  <button
+                    onClick={closeModal}
+                    className="absolute right-4 top-4 h-5 w-5 text-slate-900 hover:text-slate-600"
+                    aria-label="Close"
+                  >
+                    <X className="h-5 w-5 text-red-500" />{' '}
+                  </button>
+                  <img
+                    src={selectedHost.picture}
+                    alt={`${selectedHost.name}'s picture`}
+                    className="mx-auto mb-4 h-24 w-24 rounded-full object-cover"
+                  />
+                  <h2 className="mb-2 text-3xl font-bold text-slate-900">
+                    {selectedHost.name}
+                  </h2>
+                  <p className="text-left">
+                    <RichTextRenderer richTextDocument={selectedHost.bio} />
+                  </p>
+                </div>
+              )}
+            </motion.div>
+          </motion.div>
+        </AnimatePresence>
+      )}
     </AudioProvider>
   )
 }

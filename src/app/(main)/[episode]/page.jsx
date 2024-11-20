@@ -7,6 +7,9 @@ import { FormattedDate } from '@/components/FormattedDate'
 import { PauseIcon } from '@/components/PauseIcon'
 import { PlayIcon } from '@/components/PlayIcon'
 import { getAllEpisodes } from '@/lib/episodes'
+import TLDR from '@/components/TLDR'
+import Drawer from '@/components/Drawer'
+import Transcript from '@/components/Transcript'
 
 const getEpisode = cache(async (id) => {
   let allEpisodes = await getAllEpisodes()
@@ -61,10 +64,11 @@ export default async function Episode({ params }) {
           </p>
         </header>
         <hr className="my-12 border-gray-200" />
-        <div
-          className="prose prose-slate mt-14 [&>h2:nth-of-type(3n)]:before:bg-violet-200 [&>h2:nth-of-type(3n+2)]:before:bg-indigo-200 [&>h2]:mt-12 [&>h2]:flex [&>h2]:items-center [&>h2]:font-mono [&>h2]:text-sm [&>h2]:font-medium [&>h2]:leading-7 [&>h2]:text-slate-900 [&>h2]:before:mr-3 [&>h2]:before:h-3 [&>h2]:before:w-1.5 [&>h2]:before:rounded-r-full [&>h2]:before:bg-cyan-200 [&>ul]:mt-6 [&>ul]:list-['\2013\20'] [&>ul]:pl-5"
-          dangerouslySetInnerHTML={{ __html: episode.content }}
-        />
+        <TLDR richTextDocument={episode.tldr} />
+        <h2 className="mt-4 text-2xl font-bold">Transcripción:</h2>
+
+        <Transcript srtData={episode.content} />
+        <Drawer recommendations={episode.recommendations} />
       </Container>
     </article>
   )

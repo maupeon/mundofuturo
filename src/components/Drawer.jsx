@@ -1,37 +1,35 @@
-"use client";
-import React, { useEffect, useState, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { FaRegLightbulb, FaTimes } from "react-icons/fa";
-import { documentToReactComponents } from "@contentful/rich-text-react-renderer";
-import { recommendations2 } from "../components/recommendations/data";
-import { RecommendationCard } from "./recommendations/RecommendationCard";
+'use client'
+import React, { useEffect, useState, useRef } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { FaRegLightbulb, FaTimes } from 'react-icons/fa'
+import { RecommendationCard } from './recommendations/RecommendationCard'
 export default function Drawer({ recommendations }) {
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const drawerRef = useRef(null);
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false)
+  const drawerRef = useRef(null)
 
   const toggleDrawer = () => {
-    setIsDrawerOpen(!isDrawerOpen);
-  };
+    setIsDrawerOpen(!isDrawerOpen)
+  }
 
   const handleClickOutside = (event) => {
     if (drawerRef.current && !drawerRef.current.contains(event.target)) {
-      setIsDrawerOpen(false);
+      setIsDrawerOpen(false)
     }
-  };
+  }
 
   useEffect(() => {
     if (isDrawerOpen) {
-      document.body.classList.add("overflow-hidden");
-      document.addEventListener("mousedown", handleClickOutside);
+      document.body.classList.add('overflow-hidden')
+      document.addEventListener('mousedown', handleClickOutside)
     } else {
-      document.body.classList.remove("overflow-hidden");
-      document.removeEventListener("mousedown", handleClickOutside);
+      document.body.classList.remove('overflow-hidden')
+      document.removeEventListener('mousedown', handleClickOutside)
     }
 
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [isDrawerOpen]);
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [isDrawerOpen])
 
   return (
     <>
@@ -45,10 +43,10 @@ export default function Drawer({ recommendations }) {
         {isDrawerOpen && (
           <motion.div
             ref={drawerRef}
-            initial={{ x: "100%" }}
+            initial={{ x: '100%' }}
             animate={{ x: 0 }}
-            exit={{ x: "100%" }}
-            transition={{ type: "spring", stiffness: 300, damping: 30 }}
+            exit={{ x: '100%' }}
+            transition={{ type: 'spring', stiffness: 300, damping: 30 }}
             className="fixed inset-y-0 right-0 z-50 flex h-full w-[40vw] max-w-full overflow-scroll bg-white shadow-lg"
           >
             <div className="relative h-full w-full p-6">
@@ -69,5 +67,5 @@ export default function Drawer({ recommendations }) {
         )}
       </AnimatePresence>
     </>
-  );
+  )
 }
