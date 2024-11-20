@@ -7,7 +7,6 @@ const dateFormatter = new Intl.DateTimeFormat('es-ES', {
 export function FormattedDate({ date, ...props }) {
   // Adjust the date to be one day ahead
   const adjustedDate = new Date(date)
-  adjustedDate.setDate(adjustedDate.getDate() + 1)
 
   return (
     <time dateTime={adjustedDate.toISOString()} {...props}>
