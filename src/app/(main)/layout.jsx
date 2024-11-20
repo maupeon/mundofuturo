@@ -66,7 +66,6 @@ export default function MainLayout({ children }) {
   }, [])
 
   const openModal = (host) => {
-    console.log(host)
     setSelectedHost(host)
     setModalIsOpen(true)
   }

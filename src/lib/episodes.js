@@ -70,7 +70,6 @@ export async function getAllEpisodes() {
         tldr: matchingItem?.fields?.tldr || null,
         recommendations: matchingItem?.fields?.recommendations
           ? matchingItem.fields.recommendations.map((recommendation) => {
-              console.log(recommendation.fields, 'jejeje')
               const author = recommendation.fields?.author?.fields || {} // Extract author details if available
               return {
                 id: recommendation.sys.id, // Recommendation ID

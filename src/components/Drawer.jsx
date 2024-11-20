@@ -47,7 +47,7 @@ export default function Drawer({ recommendations }) {
             animate={{ x: 0 }}
             exit={{ x: '100%' }}
             transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-            className="fixed inset-y-0 right-0 z-50 flex h-full w-[40vw] max-w-full overflow-scroll bg-white shadow-lg"
+            className="fixed inset-y-0 right-0 z-50 flex h-full w-full max-w-full overflow-scroll bg-white shadow-lg md:w-[40vw]"
           >
             <div className="relative h-full w-full p-6">
               <FaTimes
